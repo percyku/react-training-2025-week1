@@ -56,9 +56,30 @@ function App() {
       ],
     },
   ]);
+  const modalRef = React.useRef(null);
+  const myModal = React.useRef(null);
+  const [photoUrl, setPhotoUrl] = React.useState("");
+
+  React.useEffect(() => {
+    myModal.current = new bootstrap.Modal(modalRef.current);
+  }, []);
+
+  function getSinglePic(url) {
+    setPhotoUrl(url);
+    myModal.current.show();
+  }
 
   return (
     <div className="container">
+      <div className="modal fade" tabIndex="-1" ref={modalRef}>
+        <div className="modal-dialog">
+          <div className="modal-content d-flex align-items-center ">
+            <div className="">
+              <img src={photoUrl} alt="" width="100%" height="100%" />
+            </div>
+          </div>
+        </div>
+      </div>
       <div className="row mt-5">
         <div className="col-md-6">
           <h2>產品列表</h2>
@@ -92,6 +113,7 @@ function App() {
             </tbody>
           </table>
         </div>
+
         <div className="col-md-6">
           <h2>單一產品細節</h2>
           {tempProduct ? (
@@ -118,8 +140,12 @@ function App() {
                 <div className="d-flex flex-wrap">
                   <div className="row">
                     {tempProduct.imagesUrl.map((url, index) => (
-                      <div className="col-6">
-                        <img key={index} src={url} className="images" />
+                      <div className="col-6" key={index}>
+                        <img
+                          src={url}
+                          className="images"
+                          onClick={() => getSinglePic(url)}
+                        />
                       </div>
                     ))}
                   </div>
